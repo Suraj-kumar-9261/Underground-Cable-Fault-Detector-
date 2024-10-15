@@ -1,0 +1,308 @@
+#include <SoftwareSerial.h>
+SoftwareSerial sim(11, 12);
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(2,3,4,5,6,7);
+
+#define sensor A0  
+
+#define relay1 8
+#define relay2 9
+#define relay3 10
+
+#define buzzer 13  
+String number = "+917275051468"; //-> change with your number
+
+int read_ADC;
+int distance;
+
+
+byte symbol[8] = {
+        B00000,
+        B00100,
+        B00100,
+        B00100,
+        B11111,
+        B01110,
+        B00100,
+        B00000};
+
+void setup() {
+
+sim.begin(9600);
+
+pinMode(sensor,INPUT); 
+
+pinMode(relay1, OUTPUT);
+pinMode(relay2, OUTPUT);
+pinMode(relay3, OUTPUT);
+
+pinMode(buzzer, OUTPUT);
+
+lcd.createChar(1, symbol);
+    
+lcd.begin(16, 2);
+lcd.clear();
+lcd.setCursor(0, 0); // set the cursor to column 0, line 2
+lcd.print("Welcome to Cable");
+lcd.setCursor(0, 1); // set the cursor to column 0, line 2
+lcd.print("Fault  Detection");
+delay(3000);
+lcd.clear();
+}
+
+void loop(){
+
+lcd.setCursor(0,0);
+lcd.print("P1");
+lcd.write(1);  
+
+lcd.setCursor(6,0);
+lcd.print("P2");
+lcd.write(1); 
+
+lcd.setCursor(12,0);
+lcd.print("P3");
+lcd.write(1); 
+        
+digitalWrite(relay1,LOW);
+digitalWrite(relay2,HIGH);
+digitalWrite(relay3,HIGH);  
+delay(500);
+
+data();
+
+lcd.setCursor(0,1);
+if(distance>0)
+{lcd.print(distance); lcd.print("KM  ");
+
+ {
+   if(distance==1)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-1 at 1KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("23.230011");
+    sim.print(",");
+    sim.print("45.220000");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+
+     if(distance==2)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-1 at 2KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("24.230013");
+    sim.print(",");
+    sim.print("47.220009");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+
+    if(distance==3)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-1 at 3KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("26.230234");
+    sim.print(",");
+    sim.print("49.220067");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+
+     if(distance==4)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-1 at 4KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("28.230239");
+    sim.print(",");
+    sim.print("51.220088");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+     }
+
+   delay(1000);
+
+}
+else{lcd.print(" NF ");}
+
+digitalWrite(relay1,HIGH);
+digitalWrite(relay2,LOW);
+digitalWrite(relay3,HIGH);  
+delay(500);
+
+data();
+
+lcd.setCursor(6,1);
+if(distance>0)
+{lcd.print(distance); lcd.print("KM  ");
+
+ {
+   if(distance==1)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-2 at 1KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("30.230998");
+    sim.print(",");
+    sim.print("55.220990");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+
+     if(distance==2)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-2 at 2KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("39.230010");
+    sim.print(",");
+    sim.print("59.220009");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+
+    if(distance==3)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-2 at 3KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("23.230234");
+    sim.print(",");
+    sim.print("33.220067");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+
+     if(distance==4)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-2 at 4KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("19.230222");
+    sim.print(",");
+    sim.print("40.220010");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+     }
+
+   delay(1000);
+
+}
+else{lcd.print(" NF ");}
+
+digitalWrite(relay1,HIGH);
+digitalWrite(relay2,HIGH);
+digitalWrite(relay3,LOW);  
+delay(500);
+
+data();
+
+lcd.setCursor(12,1);
+if(distance>0)
+{lcd.print(distance); lcd.print("KM  ");
+
+ {
+   if(distance==1)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-3 at 1KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("99.230018");
+    sim.print(",");
+    sim.print("67.220005");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+
+     if(distance==2)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-3 at 2KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("90.230011");
+    sim.print(",");
+    sim.print("80.220004");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+
+    if(distance==3)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-3 at 3KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("70.230239");
+    sim.print(",");
+    sim.print("60.220064");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+
+     if(distance==4)
+   {sim.println("AT+CMGF=1"); 
+    delay(200);
+    sim.println("AT+CMGS=\"" + number + "\"\r"); 
+    delay(200);
+    sim.println("Fault detected at Phase-3 at 4KM");
+    sim.print("http://maps.google.com/maps?q=loc:");
+    sim.print("85.230230");
+    sim.print(",");
+    sim.print("74.220082");
+    delay(100);
+    sim.println((char)26); //ascii code for ctrl-26 //sim800.println((char)26); //ascii code for ctrl-26
+    delay(500);}
+     }
+
+   delay(1000);
+
+}
+else{lcd.print(" NF ");}
+
+}
+
+
+void data(){
+read_ADC = analogRead(sensor);  
+distance = read_ADC/100;
+
+if(distance>9)distance = 0;
+
+if(distance>0)
+{
+
+digitalWrite(buzzer,HIGH);
+delay(200);
+digitalWrite(buzzer,LOW);  
+delay(200);
+
+
+ }
+}
